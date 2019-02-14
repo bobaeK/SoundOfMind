@@ -17,10 +17,10 @@ public class LoadingActivity extends AppCompatActivity {
             public void run() {
 
                 //첫번째 - 장애인
-                //Intent intent = new Intent(getApplicationContext(), AddressActivity.class);
+                Intent intent = new Intent(getApplicationContext(), AddressActivity.class);
 
                 //두번째 - 비장애인
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                //Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
             }
