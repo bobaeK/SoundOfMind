@@ -88,13 +88,16 @@ public class AddressActivity extends AppCompatActivity implements RecyclerTouchL
         dataList = new ArrayList<Map<String, String>>();
         unclickableRows = new ArrayList<>();
         unswipeableRows = new ArrayList<>();
-
+        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         callPermission();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        mAdapter = new MainAdapter(this, getData(dataList.size(), phoneAddrList));
+        mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mRecyclerView.addOnItemTouchListener(onTouchListener); }
 
     @Override
@@ -127,10 +130,8 @@ public class AddressActivity extends AppCompatActivity implements RecyclerTouchL
             dialogItems[i] = String.valueOf(i + 1);
         }
 
-        mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView);
-        mAdapter = new MainAdapter(this, getData(dataList.size(), phoneAddrList));
-        mRecyclerView.setAdapter(mAdapter);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
 
         onTouchListener = new RecyclerTouchListener(this, mRecyclerView);
         onTouchListener
