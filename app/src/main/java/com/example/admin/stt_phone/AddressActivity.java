@@ -38,44 +38,11 @@ public class AddressActivity extends AppCompatActivity implements RecyclerTouchL
     String[] dialogItems;
     List<Integer> unclickableRows, unswipeableRows;
     private RecyclerTouchListener onTouchListener;
-    private int openOptionsPosition;
     private OnActivityTouchListener touchListener;
 
     private ArrayList<Map<String, String>> dataList;
     private Map<String, String> phoneAddrList;
-    private ListView mListview;
 
-    /*
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_address);
-        mListview = (ListView) findViewById(R.id.listview);
-
-        dataList = new ArrayList<Map<String, String>>();
-
-        callPermission();
-
-        SimpleAdapter adapter = new SimpleAdapter(getApplicationContext(),
-                dataList,
-                android.R.layout.simple_list_item_2,
-                new String[]{"name", "phone"},
-                new int[]{android.R.id.text1, android.R.id.text2});
-        mListview.setAdapter(adapter);
-        mListview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(AddressActivity.this ,dataList.get(i).get("name"),Toast.LENGTH_LONG).show();
-                Map<String, String> tmp_map = dataList.get(i);
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("name", tmp_map.get("name"));
-                intent.putExtra("phone", tmp_map.get("phone"));
-                startActivity(intent);
-                //finish();
-            }
-        });
-    }
-    */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,7 +50,7 @@ public class AddressActivity extends AppCompatActivity implements RecyclerTouchL
         setContentView(R.layout.activity_address_new);
 
         if (getSupportActionBar() != null)
-            getSupportActionBar().setTitle("RecyclerViewEnhanced");
+            getSupportActionBar().setTitle("소비의 Address");
 
         dataList = new ArrayList<Map<String, String>>();
         unclickableRows = new ArrayList<>();
@@ -98,7 +65,9 @@ public class AddressActivity extends AppCompatActivity implements RecyclerTouchL
         mAdapter = new MainAdapter(this, getData(dataList.size(), phoneAddrList));
         mRecyclerView.setAdapter(mAdapter);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addOnItemTouchListener(onTouchListener); }
+        mRecyclerView.addOnItemTouchListener(onTouchListener);
+
+    }
 
     @Override
     protected void onPause() {
@@ -130,41 +99,31 @@ public class AddressActivity extends AppCompatActivity implements RecyclerTouchL
             dialogItems[i] = String.valueOf(i + 1);
         }
 
-
-
-
         onTouchListener = new RecyclerTouchListener(this, mRecyclerView);
         onTouchListener
-                .setIndependentViews(R.id.rowButton)
-                .setViewsToFade(R.id.rowButton)
                 .setClickable(new RecyclerTouchListener.OnRowClickListener() {
                     @Override
                     public void onRowClicked(int position) {
-                        ToastUtil.makeToast(getApplicationContext(), "Row " + (position + 1) + " clicked!");
-                    }
 
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        intent.putExtra("number", "010-XXXX-XXXX");
+                        intent.putExtra("name", "비비");
+                        startActivity(intent);
+                        Toast.makeText(getApplicationContext(), String.valueOf(position), Toast.LENGTH_LONG).show();
+                    }
                     @Override
                     public void onIndependentViewClicked(int independentViewID, int position) {
-                        ToastUtil.makeToast(getApplicationContext(), "Button in row " + (position + 1) + " clicked!");
+
                     }
+
                 })
-                .setLongClickable(true, new RecyclerTouchListener.OnRowLongClickListener() {
-                    @Override
-                    public void onRowLongClicked(int position) {
-                        ToastUtil.makeToast(getApplicationContext(), "Row " + (position + 1) + " long clicked!");
-                    }
-                })
-                .setSwipeOptionViews(R.id.add, R.id.edit, R.id.change)
+                .setSwipeOptionViews(R.id.add)
                 .setSwipeable(R.id.rowFG, R.id.rowBG, new RecyclerTouchListener.OnSwipeOptionsClickListener() {
                     @Override
                     public void onSwipeOptionClicked(int viewID, int position) {
                         String message = "";
                         if (viewID == R.id.add) {
                             message += "Add";
-                        } else if (viewID == R.id.edit) {
-                            message += "Edit";
-                        } else if (viewID == R.id.change) {
-                            message += "Change";
                         }
                         message += " clicked for row " + (position + 1);
                         ToastUtil.makeToast(getApplicationContext(), message);
@@ -197,6 +156,7 @@ public class AddressActivity extends AppCompatActivity implements RecyclerTouchL
                 if (phoneCursor.moveToFirst()) {
                     String number = phoneCursor.getString(phoneCursor.getColumnIndex(
                             ContactsContract.CommonDataKinds.Phone.NUMBER));
+                    phoneAddrList.put(name + "1", number);
                     phoneAddrList.put(name, number);
                 }
                 phoneCursor.close();
