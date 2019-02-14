@@ -53,6 +53,7 @@ public class AddressActivity extends AppCompatActivity implements RecyclerTouchL
         mListview = (ListView) findViewById(R.id.listview);
 
         dataList = new ArrayList<Map<String, String>>();
+
         callPermission();
 
         SimpleAdapter adapter = new SimpleAdapter(getApplicationContext(),
@@ -89,7 +90,37 @@ public class AddressActivity extends AppCompatActivity implements RecyclerTouchL
         unswipeableRows = new ArrayList<>();
 
         callPermission();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRecyclerView.addOnItemTouchListener(onTouchListener); }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mRecyclerView.removeOnItemTouchListener(onTouchListener);
+    }
+
+    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
+    private void callPermission() {
+        // Check the SDK version and whether the permission is already granted or not.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                && checkSelfPermission(Manifest.permission.READ_CONTACTS)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissions(
+                    new String[]{Manifest.permission.READ_CONTACTS},
+                    PERMISSIONS_REQUEST_READ_CONTACTS);
+            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
+        } else {
+            // 해당 로직으로 이동
+            setPhoneList();
+        }
+    }
+
+    public void setPhoneList(){
         // 주소 개수로 할당하기
         dialogItems = new String[dataList.size()];
         for (int i = 0; i < dataList.size(); i++) {
@@ -138,37 +169,6 @@ public class AddressActivity extends AppCompatActivity implements RecyclerTouchL
                         ToastUtil.makeToast(getApplicationContext(), message);
                     }
                 });
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        mRecyclerView.addOnItemTouchListener(onTouchListener); }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        mRecyclerView.removeOnItemTouchListener(onTouchListener);
-    }
-
-    private static final int PERMISSIONS_REQUEST_READ_CONTACTS = 100;
-    private void callPermission() {
-        // Check the SDK version and whether the permission is already granted or not.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
-                && checkSelfPermission(Manifest.permission.READ_CONTACTS)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            requestPermissions(
-                    new String[]{Manifest.permission.READ_CONTACTS},
-                    PERMISSIONS_REQUEST_READ_CONTACTS);
-            //After this point you wait for callback in onRequestPermissionsResult(int, String[], int[]) overriden method
-        } else {
-            // 해당 로직으로 이동
-            setPhoneList();
-        }
-    }
-
-    public void setPhoneList(){
 
         Cursor c = getContentResolver().query(ContactsContract.Contacts.CONTENT_URI,
                 null, null, null,
