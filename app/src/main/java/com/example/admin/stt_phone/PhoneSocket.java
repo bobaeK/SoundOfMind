@@ -74,25 +74,21 @@ public class PhoneSocket {
     public void start() {
         try {
 
-            /*Message message = Message.obtain(handler);
-            String[] content = new String[]{"messageText", "emotion"};
-            message.obj = content;
+            Message message = Message.obtain(handler);
+            message.obj = new String[]{"안녕하세요 마음의 소리입니다","nuetral"};
             handler.sendMessage(message);
 
             message = Message.obtain(handler);
-            message.obj = content;
-            handler.sendMessage(message);
-
-            content[0] = "messageText messageText messageText messageText messageText messageText messageText ";
-            message = Message.obtain(handler);
-            message.obj = content;
+            message.obj = new String[]{"저희 조는 오늘 칼퇴할 것입니다","joy"};
             handler.sendMessage(message);
 
             message = Message.obtain(handler);
-            message.obj = content;
-            handler.sendMessage(message);*/
+            message.obj = new String[]{"오늘 우리는 점심으로 돈까스를 먹었는데 조금 느끼해서 많이 먹지 못하였습니다","sadness"};
+            handler.sendMessage(message);
 
-
+            message = Message.obtain(handler);
+            message.obj = new String[]{"소희님이 키가 작다고 놀렸습니다","anger"};
+            handler.sendMessage(message);
 
             Log.d(TAG,"trying to create socket");
             mSocket = IO.socket(SOCKET_URL);

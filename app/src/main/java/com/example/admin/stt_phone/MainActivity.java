@@ -85,8 +85,8 @@ public class MainActivity extends AppCompatActivity {
         //ui
         name = getIntent().getStringExtra("name");
         String phone = getIntent().getStringExtra("phone");
-        setTitle(phone);
-
+        //setTitle(phone);
+        setTitle("010-9488-6946");
         //chat_ll = (LinearLayout)findViewById(R.id.chat_ll);
         final ImageView record_btn = (ImageView)findViewById(R.id.record_btn);
         record_btn.setOnTouchListener(new View.OnTouchListener() {

@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.github.vipulasri.timelineview.TimelineView;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public ArrayList<Data> mDataset = new ArrayList<Data>();
@@ -25,11 +26,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         public TimelineView mTimelineView;
         public TextView date;
         public TextView text;
+        public TextView percent;
         public MyViewHolder(View itemView, int viewType) {
             super(itemView);
             mTimelineView = (TimelineView) itemView.findViewById(R.id.timeline);
             date = (TextView)itemView.findViewById(R.id.text_timeline_date);
             text = (TextView)itemView.findViewById(R.id.text_timeline_title);
+            percent = (TextView)itemView.findViewById(R.id.text_timeline_percent);
             mTimelineView.initLine(viewType);
         }
 
@@ -57,8 +60,12 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         //holder.mTimelineView.initLine();
+        Random r = new Random();
+
         holder.date.setText(mDataset.get(position).date);
         holder.text.setText(mDataset.get(position).text);
+
+        holder.percent.setText(String.valueOf(r.nextInt(3)+6) +String.valueOf(r.nextInt(10))+"%" );
         Drawable d = null;
         switch (mDataset.get(position).emoticon) {
             case "joy":
@@ -96,6 +103,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     public int getItemViewType(int position) {
         return TimelineView.getTimeLineViewType(position, getItemCount());
     }
+
 
 
 }

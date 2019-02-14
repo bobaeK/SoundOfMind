@@ -31,7 +31,6 @@ public class AddressActivity extends Activity {
 
 
         dataList = new ArrayList<Map<String, String>>();
-
         callPermission();
 
 
