@@ -13,6 +13,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.github.vipulasri.timelineview.TimelineView;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -44,75 +46,26 @@ public class PhoneSocket {
     public static final String MESSAGE_TYPE_RECEIVE = "received";
     public static final String EXTRA_USERNAME = "username";
 
-/*    private Queue<String> messageList = new LinkedList<String>();
-    private Queue<String> emotionList = new LinkedList<String>();
-    //private Queue<byte[]> voiceList = new LinkedList<byte[]>();*/
-
-
     //ui
     private Context context = null;
-    private ViewGroup container = null;
+    private MyAdapter container = null;
     private String name =null;
     @SuppressLint("HandlerLeak")
     private android.os.Handler handler = new android.os.Handler(){
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            TextView tv = new TextView(context);
-
             String[] content = (String[])msg.obj;
-            tv.setText(content[0]);
 
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View view = inflater.inflate(R.layout.item_message_received, container, false);
-
-            TextView body_text = (TextView) view.findViewById(R.id.text_message_body);
-            body_text.setText(content[0]);
-            TextView name_text = (TextView) view.findViewById(R.id.text_message_name);
-            name_text.setText(name);
-            TextView time_text = (TextView) view.findViewById(R.id.text_message_time);
-
-            Calendar calendar = Calendar.getInstance();
-            SimpleDateFormat mdFormatter = new SimpleDateFormat("HH:mm");
-            time_text.setText(mdFormatter.format(calendar.getTime()));
-
-            ImageView emotionview = (ImageView) view.findViewById(R.id.image_message_emotion);
-
-            switch (content[1]) {
-                case "joy":
-                    emotionview.setImageResource(R.drawable.joy);
-                    break;
-                case "anger":
-                    emotionview.setImageResource(R.drawable.anger);
-                    break;
-                case "fear":
-                    emotionview.setImageResource(R.drawable.fear);
-                    break;
-                case "love":
-                    emotionview.setImageResource(R.drawable.love);
-                    break;
-                case "neutral":
-                    emotionview.setImageResource(R.drawable.neutral);
-                    break;
-                case "sadness":
-                    emotionview.setImageResource(R.drawable.sadness);
-                    break;
-                case "surprise":
-                    emotionview.setImageResource(R.drawable.surprise);
-                    break;
-                case "not yet":
-                    emotionview.setImageResource(R.drawable.neutral);
-                    break;
-            }
-
-            container.addView(view);
+            container.mDataset.add(new Data(content[1], (new SimpleDateFormat("HH:mm")).format(android.icu.util.Calendar.getInstance().getTime()), content[0]));
+            container.notifyDataSetChanged();
         }
     };
 
     public PhoneSocket(){
 
     }
-    public PhoneSocket(Context context, ViewGroup container, String name){
+    public PhoneSocket(Context context, MyAdapter container, String name){
         this.context = context;
         this.container = container;
         this.name = name;
@@ -120,12 +73,34 @@ public class PhoneSocket {
 
     public void start() {
         try {
+
+            /*Message message = Message.obtain(handler);
+            String[] content = new String[]{"messageText", "emotion"};
+            message.obj = content;
+            handler.sendMessage(message);
+
+            message = Message.obtain(handler);
+            message.obj = content;
+            handler.sendMessage(message);
+
+            content[0] = "messageText messageText messageText messageText messageText messageText messageText ";
+            message = Message.obtain(handler);
+            message.obj = content;
+            handler.sendMessage(message);
+
+            message = Message.obtain(handler);
+            message.obj = content;
+            handler.sendMessage(message);*/
+
+
+
             Log.d(TAG,"trying to create socket");
             mSocket = IO.socket(SOCKET_URL);
 
             mSocket.on("init", onConnect);
             mSocket.on("json", onMessageReceived);
             //mSocket.on(Constants.EVENT_MESSAGE, onMessageReceived);
+
 
             mSocket.connect();
             mSocket.emit("init");
@@ -135,29 +110,6 @@ public class PhoneSocket {
         }
     }
 
-/*    public String getMessages() {
-        if (messageList.size() == 0) {
-            return "None";
-        }
-        else {
-            return messageList.poll();
-        }
-    }*/
-
-/*
-    public String getEmotion() {
-        if (emotionList.size() == 0) {
-            return "None";
-        }
-        else {
-            return emotionList.poll();
-        }
-    }
-*/
-
-    public byte[] getVoice() {
-        return null;
-    }
 
     public void sendVoice(byte[] byteArray) {
         mSocket.emit("receive", byteArray);
@@ -229,8 +181,5 @@ public class PhoneSocket {
         }
     };
 
-    private void viewText(String emotion, String text){
-
-    }
 
 }

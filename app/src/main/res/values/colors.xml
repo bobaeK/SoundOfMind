@@ -7,4 +7,5 @@
     <color name="colorMainDark">#D73E3E</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBackground">#FFE9E5</color>
+    <color name="colorBlack">#000000</color>
 </resources>

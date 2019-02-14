@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
 import io.socket.client.IO;
 import io.socket.client.Socket;
@@ -48,6 +51,10 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayout chat_ll = null;
     private String name = null;
 
+    private RecyclerView mRecyclerView;
+    private MyAdapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -75,13 +82,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(icicle);
         setContentView(R.layout.activity_main);
 
-
         //ui
         name = getIntent().getStringExtra("name");
         String phone = getIntent().getStringExtra("phone");
         setTitle(phone);
 
-        chat_ll = (LinearLayout)findViewById(R.id.chat_ll);
+        //chat_ll = (LinearLayout)findViewById(R.id.chat_ll);
         final ImageView record_btn = (ImageView)findViewById(R.id.record_btn);
         record_btn.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -107,7 +113,21 @@ public class MainActivity extends AppCompatActivity {
         });
         record_btn.setClickable(true);
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
+
+        // specify an adapter (see also next example)
+        ArrayList<Data> sampleData = new ArrayList<Data>();
+        mAdapter = new MyAdapter(sampleData, getApplicationContext());
+        mRecyclerView.setAdapter(mAdapter);
 
         // MARK: - TEST 용
         // 녹음한 음성 저장하기 위함
@@ -117,18 +137,15 @@ public class MainActivity extends AppCompatActivity {
         ActivityCompat.requestPermissions(this, permissions, REQUEST_RECORD_AUDIO_PERMISSION);
     }
 
+
+
     @Override
     protected void onStart() {
         super.onStart();
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
         //bb
         // Create Socket
-        Log.d(LOG_TAG, "onResume()");
-        phoneSocket = new PhoneSocket(this, chat_ll, name);
+        Log.d(LOG_TAG, "onStart()");
+        phoneSocket = new PhoneSocket(this, mAdapter, name);
         phoneSocket.start();
 
 
