@@ -123,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-
         // specify an adapter (see also next example)
         ArrayList<Data> sampleData = new ArrayList<Data>();
         mAdapter = new MyAdapter(sampleData, getApplicationContext());
