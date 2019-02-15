@@ -8,10 +8,12 @@
     android:layout_marginLeft="10dp"
     android:layout_marginRight="10dp">
     <TextView
+        android:background="@drawable/rounded_rectangle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/text_timeline_percent"
         android:layout_marginLeft="10dp"
+        android:padding="3dp"
         android:text="70%"
         android:layout_gravity="center"
         />
@@ -22,9 +24,9 @@
         android:layout_marginLeft="10dp"
         app:markerSize="25dp"
         app:lineWidth="3dp"
-        app:startLineColor="@color/colorBlack"
-        app:endLineColor="@color/colorBlack"
-        app:lineStyle="normal"/>
+        app:startLineColor="#555555"
+        app:endLineColor="#555555"
+        app:lineStyle="dash"/>
 
     <android.support.v7.widget.CardView
         android:layout_width="0dp"
@@ -58,6 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="2dp"
+                android:textSize="18sp"
                 android:id="@+id/text_timeline_title"
                 android:textColor="@android:color/black"
                 android:text="Order Successfully Completed"/>

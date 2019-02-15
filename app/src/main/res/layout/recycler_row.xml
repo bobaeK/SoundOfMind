@@ -35,7 +35,7 @@
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_add_black_24dp"
+                    android:src="@drawable/save_file"
                     android:tint="@android:color/white"/>
 
                 <TextView
@@ -48,7 +48,7 @@
                     android:ellipsize="end"
                     android:gravity="center"
                     android:maxLines="1"
-                    android:text="Add"
+                    android:text="files"
                     android:textColor="@android:color/white"
                     android:textSize="12sp"/>
             </LinearLayout>

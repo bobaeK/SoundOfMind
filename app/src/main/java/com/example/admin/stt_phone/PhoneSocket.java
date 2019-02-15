@@ -74,7 +74,7 @@ public class PhoneSocket {
     public void start() {
         try {
 
-            Message message = Message.obtain(handler);
+/*            Message message = Message.obtain(handler);
             message.obj = new String[]{"안녕하세요 마음의 소리입니다","nuetral"};
             handler.sendMessage(message);
 
@@ -88,7 +88,7 @@ public class PhoneSocket {
 
             message = Message.obtain(handler);
             message.obj = new String[]{"소희님이 키가 작다고 놀렸습니다","anger"};
-            handler.sendMessage(message);
+            handler.sendMessage(message);*/
 
             Log.d(TAG,"trying to create socket");
             mSocket = IO.socket(SOCKET_URL);

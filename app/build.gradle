@@ -32,4 +32,5 @@ dependencies {
     }
     implementation 'com.github.vipulasri:timelineview:1.1.0'
     implementation 'com.nikhilpanju.recyclerviewenhanced:recyclerviewenhanced:1.1.0'
+
 }
